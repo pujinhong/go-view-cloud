@@ -1,0 +1,83 @@
+# Tomcat
+server:
+  port: 8719
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: ruoyi-view
+  profiles:
+    # 环境配置
+    active: dev
+  cloud:
+    bootstrap:
+      enabled: true
+      # 服务注册中心
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        enabled: false
+        namespace: bigdata
+        # 服务注册地址
+        server-addr: 192.168.200.24:8848
+      config:
+        enabled: false
+        namespace: bigdata
+        # 配置中心地址
+        server-addr: 192.168.200.24:8848
+        # 配置文件格式
+        file-extension: yml
+        import-check:
+          enabled: false
+  datasource:
+    primary: master
+    druid:
+      stat-view-servlet:
+        enabled: true
+        loginUsername: admin
+        loginPassword: 123456
+    dynamic:
+      druid:
+        initial-size: 5
+        min-idle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: false
+        maxPoolPreparedStatementPerConnectionSize: -1
+        filters: stat,slf4j
+        connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      datasource:
+        # 主库数据源
+        master:
+          driver-class-name: org.sqlite.JDBC
+          url: jdbc:sqlite:db/ruoyi-view.db
+          username:
+          password:
+        # 从库数据源
+
+mybatis-plus:
+  # 搜索指定包别名
+  typeAliasesPackage: com.ruoyi.portal.**
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapper-locations: classpath:mapper/**/*.xml
+
+v2:
+  file:
+    # 发布路径
+    publishUrl: http://localhost:9321/resource/
+    # local/oss/minio
+    storageType: local
+    # 默认存储格式
+    defaultType: .png
+    oss:
+    local:
+      path: D:/upload/
+    minio:
+
