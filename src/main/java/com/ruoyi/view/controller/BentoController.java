@@ -24,17 +24,31 @@ import java.util.Map;
 public class BentoController {
 
     @CrossOrigin
-    @GetMapping("/data/{name}")
+    @GetMapping("/sql/{name}")
     public AjaxResult oneByName(@PathVariable("name") String name, @RequestParam Map<String, Object> params) throws IOException {
         BentoSqlEntity one = bentoService.getOne(new LambdaQueryWrapper<BentoSqlEntity>().eq(BentoSqlEntity::getName, name));
         if(one == null){
             return AjaxResult.error("未找到对应的块");
         }
 
-        List<Map<String, Object>> data = dynamicJDBC.findListByMap(one.getDbCode(), one.getSql(), params);
+        List<Map<String, Object>> data = dynamicJDBC.findListByMap(one.getDbCode(), one.getStatement(), params);
         BentoSqlVo vo = new BentoSqlVo();
         vo.setName(one.getName());
         vo.setData(data);
+        vo.setTitle(one.getTitle());
+        return AjaxResult.ok().setData(vo);
+    }
+    @CrossOrigin
+    @GetMapping("/json/{name}")
+    public AjaxResult jsonByName(@PathVariable("name") String name, @RequestParam Map<String, Object> params) throws IOException {
+        BentoSqlEntity one = bentoService.getOne(new LambdaQueryWrapper<BentoSqlEntity>().eq(BentoSqlEntity::getName, name));
+        if(one == null){
+            return AjaxResult.error("未找到对应的块");
+        }
+
+        BentoSqlVo vo = new BentoSqlVo();
+        vo.setName(one.getName());
+        vo.setData(new BentoSqlEntity());
         vo.setTitle(one.getTitle());
         return AjaxResult.ok().setData(vo);
     }

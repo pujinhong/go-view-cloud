@@ -10,14 +10,13 @@ import lombok.Data;
  * @created 2024/7/2
  */
 @Data
-@TableName("t_bento_sql")
-public class BentoSqlEntity {
+@TableName("t_bento_json")
+public class BentoJsonEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     Integer id;
     String name;
     String title;
-    String dbCode;
-    String statement;
+    String json;
 
 }
